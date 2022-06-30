@@ -1,24 +1,66 @@
-# README
+# 環境情報
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- ruby: 3.1.2
+- Node: 16.15.1
+- Docker: 20.10.14
+- Docker Compose: 2.4.1
 
-Things you may want to cover:
+# 実行方法
 
-* Ruby version
+## makeコマンドが使える場合
 
-* System dependencies
+### 環境のセットアップ
+- Dockerfileのビルド
+- ライブラリのインストール
+- DBの作成、Seedの追加
 
-* Configuration
+```bash
+make setup
+```
 
-* Database creation
+### Railsの起動
 
-* Database initialization
+```bash
+make start
+```
 
-* How to run the test suite
+## dockerで個別で行う場合
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+### 環境のセットアップ
 
-* ...
+#### Dockerfileのビルド
+```bash
+docker compose build
+```
+
+#### ライブラリのインストール
+```bash
+docker compose run --rm web bundle install
+```
+
+#### DBの作成
+```bash
+docker compose run --rm web bundle exec rails db:create
+```
+
+#### DBのマイグレーション
+```bash
+docker compose run --rm web bundle exec rails db:migrate
+```
+
+
+#### DBのSeedの挿入
+```bash
+docker compose run --rm web bundle exec rails db:seed
+```
+
+### Railsの起動
+
+```bash
+docker compose up
+```
+
+# ローカルでのアクセス
+
+http://localhost:3000
