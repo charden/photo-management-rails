@@ -1,0 +1,50 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        RUBY_VERSION: '3.1.2'
+        NODE_MAJOR: '16'
+        YARN_VERSION: '1.22.19'
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app:cached
+      - bundle:/usr/local/bundle
+      - rails_cache:/app/tmp/cache
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-development}
+      DATABASE_HOST: db
+      DATABASE_NAME: app_development
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - '3000:3000'
+    tmpfs:
+      - /tmp
+      - /app/tmp/pids
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app_development
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -uroot -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1;'"
+      interval: 5s
+volumes:
+  bundle:
+  node_modules:
+  rails_cache:
+  mysql:
+  packs:
