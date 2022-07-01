@@ -1,0 +1,10 @@
+<div id="<%= dom_id photo %>" class="photoWrapper">
+  <div class="photoLabel">
+    <%= photo.title %>
+  </div>
+
+  <div class="photo">
+    <%= image_tag photo.image if photo.image.attached? %>
+  </div>
+
+</div>
