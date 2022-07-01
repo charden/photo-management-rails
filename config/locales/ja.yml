@@ -5,7 +5,11 @@ ja:
       user:
         name: ユーザーID
         password: パスワード
+      photo:
+        title: タイトル
+        image: 画像ファイル
   errors:
     format: "%{attribute}%{message}"
     messages:
       blank: を入力してください
+      too_long: は%{count}文字以内で入力してください

@@ -1,0 +1,13 @@
+<%= link_to "ログアウト", logout_path, {class: "logout-link"} %>
+
+<h1>写真一覧</h1>
+
+<%= link_to "写真の選択してアップロード", new_photo_path, {class: "photo-upload-link"} %>
+
+
+<div id="photos">
+  <% @photos.each do |photo| %>
+    <%= render photo %>
+  <% end %>
+</div>
+

@@ -37,15 +37,15 @@ class SessionsTest < ActionDispatch::IntegrationTest
     assert_select "form[action=?]", "/login"
   end
 
-  # test "未ログイン時にTOPにアクセスするとログイン画面にリダイレクトすること" do
-  #   get "/"
-  #   assert_redirected_to '/login'
-  # end
+  test "未ログイン時にTOPにアクセスするとログイン画面にリダイレクトすること" do
+    get "/"
+    assert_redirected_to '/login'
+  end
 
-  # test "ログイン後にTOPにリダイレクトすること" do
-  #   post "/login", params: { name: "test", password: "password" }
-  #   assert_redirected_to "/"
-  # end
+  test "ログイン後にTOPにリダイレクトすること" do
+    post "/login", params: { name: "test", password: "password" }
+    assert_redirected_to "/"
+  end
 
   test "ログイン後にログイン済み状態になっていること" do
     post "/login", params: { name: "test", password: "password" }

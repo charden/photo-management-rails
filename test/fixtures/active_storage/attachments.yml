@@ -1,0 +1,9 @@
+one_thumbnail_attachment:
+  name: one
+  record: first (Photo)
+  blob: one_thumbnail_blob
+
+two_thumbnail_attachment:
+  name: two
+  record: second (Photo)
+  blob: two_thumbnail_blob

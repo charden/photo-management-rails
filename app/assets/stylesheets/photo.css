@@ -1,0 +1,24 @@
+#photos {
+    display: flex;
+}
+
+.photoLabel {
+   text-align: center
+}
+
+.photoWrapper {
+    margin: 4px;
+}
+
+.photo {
+    width: 200px;
+    height: 200px;
+    border: gray 1px solid;
+    text-align: center;
+}
+
+.photo > img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}
