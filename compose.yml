@@ -36,13 +36,12 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: app_development
     ports:
       - '3306:3306'
     volumes:
       - mysql:/var/lib/mysql
     healthcheck:
-      test: "mysql $$MYSQL_DATABASE -uroot -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1;'"
+      test: "mysql -uroot -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1;'"
       interval: 5s
 volumes:
   bundle:
