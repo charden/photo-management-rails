@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
     end
   end
+
+  def access_token
+    session[:access_token]
+  end
 end

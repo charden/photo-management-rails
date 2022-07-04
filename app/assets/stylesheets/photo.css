@@ -7,6 +7,9 @@
 }
 
 .photoWrapper {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
     margin: 4px;
 }
 
@@ -21,4 +24,8 @@
     width: 200px;
     height: 200px;
     object-fit: contain;
+}
+
+.button-tweet {
+    margin-top: 4px;
 }
