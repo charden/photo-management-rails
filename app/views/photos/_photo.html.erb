@@ -6,5 +6,9 @@
   <div class="photo">
     <%= image_tag photo.image if photo.image.attached? %>
   </div>
-
+  <% if access_token? %>
+    <%= link_to tweet_photo_path(photo) do %>
+      <button class="button-tweet">ツイートする</button>
+    <% end %>
+  <% end %>
 </div>

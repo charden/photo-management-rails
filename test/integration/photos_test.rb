@@ -1,8 +1,10 @@
 require "test_helper"
+require 'webmock/minitest'
 
 class PhotosTest < ActionDispatch::IntegrationTest
   setup do
     post "/login", params: { name: "test", password: "password" }
+    @photo = photos(:one)
   end
 
   test "写真一覧が表示できること" do
@@ -18,6 +20,20 @@ class PhotosTest < ActionDispatch::IntegrationTest
   test "｢ログアウト｣リンクがあること" do
     get "/"
     assert_select "a.logout-link", "ログアウト"
+  end
+
+  test "MyTweetAppに未ログインの場合は、｢MyTweetAppと連携｣リンクがあること" do
+    get "/"
+    assert_select "a.tweet-auth-link", "MyTweetAppと連携"
+  end
+
+  test "MyTweetAppにログイン済みの場合は｢MyTweetAppと連携中｣と表示されること" do
+    stub_request(:post, ENV.fetch('TWEET_APP_AUTH_URL') + '/oauth/token')
+      .to_return(body: '{"access_token": "sample_access_token"}')
+    get "/oauth/callback?code=test"
+
+    get "/"
+    assert_select "body > div:nth-child(3) > span", "MyTweetAppと連携中"
   end
 
   test "｢写真の選択してアップロード｣リンクがあること" do
@@ -41,7 +57,7 @@ class PhotosTest < ActionDispatch::IntegrationTest
   end
 
   test "画像をアップロードすると追加されること" do
-    post "/photos", params: { photo: {title: "test", image: Rack::Test::UploadedFile.new(Rails.root.join('test', 'fixtures', 'files', 'three.png'), 'image/png') }}
+    post "/photos", params: { photo: { title: "test", image: Rack::Test::UploadedFile.new(Rails.root.join('test', 'fixtures', 'files', 'three.png'), 'image/png') } }
     follow_redirect!
     assert_select ".photoLabel", "test"
     assert_select ".photo", 3
@@ -78,17 +94,17 @@ class PhotosTest < ActionDispatch::IntegrationTest
   end
 
   test "タイトルが未入力の場合に｢ユーザーIDを入力してください｣と表示されること" do
-    post "/photos", params: { photo: {title: "", image: Rack::Test::UploadedFile.new(Rails.root.join('test', 'fixtures', 'files', 'three.png'), 'image/png') }}
+    post "/photos", params: { photo: { title: "", image: Rack::Test::UploadedFile.new(Rails.root.join('test', 'fixtures', 'files', 'three.png'), 'image/png') } }
     assert_select "ul > li", "タイトルを入力してください"
   end
 
   test "タイトルが30文字以上の場合に｢タイトルは30文字以内で入力してください｣と表示されること" do
-    post "/photos", params: { photo: {title: "この文章はダミーです。文字の大きさ、量、字間、行間等を確認する", image: Rack::Test::UploadedFile.new(Rails.root.join('test', 'fixtures', 'files', 'three.png'), 'image/png') }}
+    post "/photos", params: { photo: { title: "この文章はダミーです。文字の大きさ、量、字間、行間等を確認する", image: Rack::Test::UploadedFile.new(Rails.root.join('test', 'fixtures', 'files', 'three.png'), 'image/png') } }
     assert_select "ul > li", "タイトルは30文字以内で入力してください"
   end
 
   test "画像が未選択の場合に｢画像ファイルを入力してください｣と表示されること" do
-    post "/photos", params: { photo: {title: "test", image: nil}}
+    post "/photos", params: { photo: { title: "test", image: nil } }
     assert_select "ul > li", "画像ファイルを入力してください"
   end
 

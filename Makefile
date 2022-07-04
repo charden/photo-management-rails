@@ -24,7 +24,6 @@ setup: # Install dependencies and db setup
 	$(RAILS) db:seed
 
 start: # start development environment
-	$(YARN) install
 	$(RAILS) db:migrate
 	$(DOCKER_UP) -d
 

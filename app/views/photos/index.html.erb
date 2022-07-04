@@ -1,9 +1,17 @@
-<%= link_to "ログアウト", logout_path, {class: "logout-link"} %>
+<%= link_to "ログアウト", logout_path, { class: "logout-link" } %>
 
 <h1>写真一覧</h1>
 
-<%= link_to "写真の選択してアップロード", new_photo_path, {class: "photo-upload-link"} %>
-
+<div>
+  <% if access_token? %>
+    <span>MyTweetAppと連携中</span>
+  <% else %>
+    <%= link_to "MyTweetAppと連携", oauth_new_path, { class: "tweet-auth-link" } %>
+  <% end %>
+</div>
+<div>
+  <%= link_to "写真の選択してアップロード", new_photo_path, { class: "photo-upload-link" } %>
+</div>
 
 <div id="photos">
   <% @photos.each do |photo| %>
